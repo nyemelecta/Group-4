@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up • Portfolio Generator</title>
+  <link rel="stylesheet" href="main.css" />
+  <!-- Icons (Font Awesome) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <main class="auth-card">
+    <section class="panel">
+      <!-- Left: promo copy -->
+      <div class="side">
+        <h2 class="brand">ONLINE<br>PORTFOLIO<br>GENERATOR</h2>
+        <p class="kicker">Create a beautiful developer or designer portfolio in minutes. Pick a template, drop your work, publish—no code needed.</p>
+      </div>
+
+      <!-- Right: form -->
+      <div class="form-wrap">
+        <h2>Sign Up</h2>
+
+        <form class="form" id="signupForm" autocomplete="on">
+          <div class="input">
+            <input type="text" name="name" placeholder="Full name" required />
+            <i class="fa-regular fa-user icon" aria-hidden="true"></i>
+          </div>
+
+          <div class="input">
+            <input type="email" name="email" placeholder="Email" required />
+            <i class="fa-regular fa-envelope icon" aria-hidden="true"></i>
+          </div>
+
+          <div class="input">
+            <input id="spw" type="password" name="password" placeholder="Password" minlength="6" required />
+            <button class="toggle" type="button" aria-label="Show password" onclick="togglePw('spw', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+
+          <div class="input">
+            <input id="scpw" type="password" name="confirm" placeholder="Confirm password" minlength="6" required />
+            <button class="toggle" type="button" aria-label="Show password" onclick="togglePw('scpw', this)">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+
+          <button class="btn" type="submit">Register</button>
+
+          <!--Moved inside the form-->
+         <p class="note" style="text-align: right; margin-top: 0;">
+          Already have an account? <a href="login.html">Login</a>
+         </p>
+        </form>
+
+        <p id="smsg" class="note center" style="display:none"></p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function togglePw(id, btn){
+      const input = document.getElementById(id);
+      const i = btn.querySelector('i');
+      const isPw = input.type === 'password';
+      input.type = isPw ? 'text' : 'password';
+      i.classList.toggle('fa-eye');
+      i.classList.toggle('fa-eye-slash');
+    }
+
+    // Demo in-page validation only (no backend)
+    document.getElementById('signupForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const pw = document.getElementById('spw').value.trim();
+      const cpw = document.getElementById('scpw').value.trim();
+      const msg = document.getElementById('smsg');
+      if(pw !== cpw){
+        msg.style.display='block';
+        msg.style.color='var(--error)';
+        msg.textContent = 'Passwords do not match.';
+        return;
+      }
+      msg.style.display='block';
+      msg.style.color='var(--text)';
+      msg.textContent = '✅ Account created (demo). Hook this up to your backend.';
+      this.reset();
+    });
+  </script>
+</body>
+</html>
