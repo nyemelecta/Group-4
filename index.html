@@ -1,92 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sign Up • Portfolio Generator</title>
-  <link rel="stylesheet" href="main.css" />
-  <!-- Icons (Font Awesome) -->
+  <title>Online Portfolio Website Generator</title>
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
-<body>
 
+<body>
+  <!-- ------------------ AUTHENTICATION PAGE ------------------ -->
   <main class="auth-card">
     <section class="panel">
-      <!-- Left: promo copy -->
+
+      <!-- Left: promo -->
       <div class="side">
         <h2 class="brand">ONLINE<br>PORTFOLIO<br>GENERATOR</h2>
-        <p class="kicker">Create a beautiful developer or designer portfolio in minutes. Pick a template, drop your work, publish—no code needed.</p>
+        <p class="kicker">Create a beautiful developer or designer portfolio in minutes. Pick a template, drop your
+          work, publish—no code needed.</p>
       </div>
 
-      <!-- Right: form -->
+      <!-- Right: forms -->
       <div class="form-wrap">
-        <h2>Sign Up</h2>
 
-        <form class="form" id="signupForm" autocomplete="on">
+        <!-- Sign Up -->
+        <form class="form" id="signupForm">
+          <h2>Sign Up</h2>
           <div class="input">
             <input type="text" name="name" placeholder="Full name" required />
-            <i class="fa-regular fa-user icon" aria-hidden="true"></i>
+            <i class="fa-regular fa-user icon"></i>
           </div>
-
           <div class="input">
             <input type="email" name="email" placeholder="Email" required />
-            <i class="fa-regular fa-envelope icon" aria-hidden="true"></i>
+            <i class="fa-regular fa-envelope icon"></i>
           </div>
-
           <div class="input">
             <input id="spw" type="password" name="password" placeholder="Password" minlength="6" required />
-            <button class="toggle" type="button" aria-label="Show password" onclick="togglePw('spw', this)">
-              <i class="fa-regular fa-eye"></i>
-            </button>
+            <button class="toggle" type="button" onclick="togglePw('spw', this)"><i
+                class="fa-regular fa-eye"></i></button>
           </div>
-
           <div class="input">
             <input id="scpw" type="password" name="confirm" placeholder="Confirm password" minlength="6" required />
-            <button class="toggle" type="button" aria-label="Show password" onclick="togglePw('scpw', this)">
-              <i class="fa-regular fa-eye"></i>
-            </button>
+            <button class="toggle" type="button" onclick="togglePw('scpw', this)"><i
+                class="fa-regular fa-eye"></i></button>
           </div>
-
           <button class="btn" type="submit">Register</button>
-
-          <!--Moved inside the form-->
-         <p class="note" style="text-align: right; margin-top: 0;">
-          Already have an account? <a href="login.html">Login</a>
-         </p>
+          <p class="note" style="text-align: right; margin-top: 0;">
+            Already have an account? <a href="#" onclick="showLogin()">Login</a>
+          </p>
+          <p id="smsg" class="note center" style="display:none"></p>
         </form>
 
-        <p id="smsg" class="note center" style="display:none"></p>
+        <!-- Login -->
+        <form class="form" id="loginForm" style="display:none;">
+          <h2>Login</h2>
+          <div class="input">
+            <input type="email" id="loginEmail" placeholder="Email" required />
+            <i class="fa-regular fa-envelope icon"></i>
+          </div>
+          <div class="input">
+            <input id="lpw" type="password" placeholder="Password" required />
+            <button class="toggle" type="button" onclick="togglePw('lpw', this)"><i
+                class="fa-regular fa-eye"></i></button>
+          </div>
+          <button class="btn" type="submit">Login</button>
+          <p class="note" style="text-align: right; margin-top: 0;">
+            Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a>
+          </p>
+        </form>
+
       </div>
     </section>
   </main>
 
-  <script>
-    function togglePw(id, btn){
-      const input = document.getElementById(id);
-      const i = btn.querySelector('i');
-      const isPw = input.type === 'password';
-      input.type = isPw ? 'text' : 'password';
-      i.classList.toggle('fa-eye');
-      i.classList.toggle('fa-eye-slash');
-    }
+  <!-- ------------------ PORTFOLIO GENERATOR ------------------ -->
+  <div class="container" id="portfolioSection" style="display:none;">
+    <h1>Portfolio Generator</h1>
+    <div class="form-section">
+      <label>About Me:</label>
+      <textarea id="aboutMe" rows="4" placeholder="Write a short bio..."></textarea>
+    </div>
 
-    // Demo in-page validation only (no backend)
-    document.getElementById('signupForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const pw = document.getElementById('spw').value.trim();
-      const cpw = document.getElementById('scpw').value.trim();
-      const msg = document.getElementById('smsg');
-      if(pw !== cpw){
-        msg.style.display='block';
-        msg.style.color='var(--error)';
-        msg.textContent = 'Passwords do not match.';
-        return;
-      }
-      msg.style.display='block';
-      msg.style.color='var(--text)';
-      msg.textContent = '✅ Account created (demo). Hook this up to your backend.';
-      this.reset();
-    });
-  </script>
+    <div class="form-section">
+      <label>Experience (Role - Company - Duration) one per line:</label>
+      <textarea id="experience" rows="4" placeholder="Frontend Developer - Company X - 2022-2024"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label>Projects (Title - Description - Link) one per line:</label>
+      <textarea id="projects" rows="4"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label>Social Links (URL) one per line:</label>
+      <textarea id="links" rows="4"></textarea>
+    </div>
+
+    <div class="form-section">
+      <label>Contact Email/Phone:</label>
+      <input type="text" id="contact">
+    </div>
+
+    <button type="button" onclick="generatePortfolio()">Generate</button>
+    <button type="button" onclick="downloadPDF()">Download PDF</button>
+    <button type="button" onclick="downloadWord()">Download Word</button>
+    </form>
+    <div id="preview" class="preview" style="display:none"></div>
+  </div>
+
+  <script src="index.js"></script>
 </body>
+
 </html>
